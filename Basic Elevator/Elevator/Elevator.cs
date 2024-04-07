@@ -122,22 +122,56 @@ namespace Basic_Elevator.Elevator
         //This method allows people to disembark from the elevator
         private async Task TryPeopleGetOffAsync()
         {
-            var nextDropOff = _peopleOnElevator.OrderBy(x => x.TargetFloor).First();
-            var nextPickUp = _peopleWaiting.Where(x => x.CurrentFloor >= _currentFloor && x.TargetFloor >= _currentFloor).OrderBy(x => x.CurrentFloor).FirstOrDefault();
+            var peopleAbove = _peopleOnElevator.Where(x => x.TargetFloor > _currentFloor);
+            var peopleBelow = _peopleOnElevator.Where(x => x.TargetFloor < _currentFloor);
+            Person nextPerson = null;
+     
+            if (_direction == Direction.None)
+            {
+                // initially, set the direction based on the closest person
+                var closestPerson = _peopleOnElevator.OrderBy(x => Math.Abs(x.TargetFloor - _currentFloor)).First();
+                _direction = closestPerson.TargetFloor > _currentFloor ? Direction.Up : Direction.Down;
+            }
 
-            if (nextPickUp == null || nextDropOff.TargetFloor < nextPickUp.CurrentFloor || nextPickUp.CurrentFloor == _currentFloor)
-                await MoveToFloor(nextDropOff.TargetFloor);
+            if (_direction == Direction.Up)
+                nextPerson = GetNextPerson(peopleAbove, peopleBelow, _direction);   
+            else // Current direction is Down
+                nextPerson = GetNextPerson(peopleAbove, peopleBelow, _direction);
+
+            if (nextPerson == null)
+            {
+                // If there's nowhere to go, halt the elevator
+                _direction = Direction.None;
+            }
             else
-                await MoveToFloor(nextPickUp.CurrentFloor);
+            {
+                // Move to the decided direction
+                await MoveToFloor(nextPerson.TargetFloor);
 
-            // Get array of all passengers getting off at this floor
-            var peopleGettingOff = _peopleOnElevator.Where(x => x.TargetFloor == _currentFloor).ToArray();
+                // Perform the work of dropping off or picking up people
+                var peopleGettingOff = _peopleOnElevator.Where(x => x.TargetFloor == _currentFloor).ToArray();
 
-            // Format logging based on whether there is one person or many persons getting off
-            await CreateLogMessageAsync(peopleGettingOff);
+                await CreateLogMessageAsync(peopleGettingOff);
 
-            // Remove passengers from elevator who got off at this floor
-            _peopleOnElevator = _peopleOnElevator.Except(peopleGettingOff).ToList();
+                _peopleOnElevator = _peopleOnElevator.Except(peopleGettingOff).ToList();
+            }
+        }
+
+        private Person GetNextPerson(IEnumerable<Person> primary, IEnumerable<Person> secondary, Direction direction)
+        {
+            Person nextPerson = null;
+
+            if (primary.Any())
+            {
+                nextPerson = primary.OrderBy(x => x.TargetFloor).First();
+            }
+            else if (secondary.Any())
+            {
+                _direction = direction == Direction.Up ? Direction.Down : Direction.Up;
+                nextPerson = secondary.OrderByDescending(x => x.TargetFloor).First();
+            }
+
+            return nextPerson;
         }
 
         // This method makes the elevator pick up people
