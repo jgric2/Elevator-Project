@@ -342,7 +342,7 @@
             // 
             // panelElevatorCar
             // 
-            this.panelElevatorCar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.panelElevatorCar.BackColor = System.Drawing.Color.Silver;
             this.panelElevatorCar.BackgroundImage = global::Basic_Elevator.Properties.Resources.ElevatorClosed1;
             this.panelElevatorCar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelElevatorCar.Location = new System.Drawing.Point(0, 437);

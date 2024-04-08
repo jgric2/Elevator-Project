@@ -6,11 +6,13 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Media;
 using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Basic_Elevator.Elevator
 {
     public class Elevator
     {
+        #region Fields and properties
         // Declaring variables for the maximum weight, speed, floor height, total distance travelled and total 
         private double _maxWeight = 725;
         private double _speed = 1.1;
@@ -20,16 +22,11 @@ namespace Basic_Elevator.Elevator
         private Direction _direction = Direction.None; //Elevator Direction
         private bool _showSimulation;
 
-      
         private List<Person> _peopleOnElevator = new List<Person>();  // List to hold all the people currently in the elevator and at current floor
         private int _currentFloor = 0;  // Current floor elevator is on
         private List<Person> _peopleWaiting = new List<Person>();
         public bool ElevatorRunning = false; // Indicator of whether the elevator is running
-
-        // Events for logging messages and changing elevator state
-        public event Action<ListViewItem> MessageLogged;
-        public event Action<ElevatorEvent> ElevatorEventAction;
-
+       
         // Simulation variables
         public int SimulationSpeed = 100;
         public int TotalFloors;
@@ -38,11 +35,17 @@ namespace Basic_Elevator.Elevator
         public Panel Car { get; set; }
         public Panel Shaft { get; set; }
 
-
         public Doors DoorStatus = Doors.Closed; // Status of the elevator doors
         private SoundPlayer _player = new SoundPlayer(); // Sound player for elevator ding sound
+        #endregion
 
+        #region Events
+        // Events for logging messages and changing elevator state
+        public event Action<ListViewItem> MessageLogged;
+        public event Action<ElevatorEvent> ElevatorEventAction;
+        #endregion
 
+        #region Constructor
         // Constructor method for elevator, initializing all essential properties
         public Elevator(int totalFloors, double elevatorSpeed, double maxWeight, double floorHeightMeters, int simulationSpeed, Panel car = null, Panel shaft = null)
         {
@@ -64,7 +67,9 @@ namespace Basic_Elevator.Elevator
             string resourcePath = "Basic_Elevator.Resources.elevator-ding.wav";
             _player.Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath);
         }
+        #endregion
 
+        #region Public Methods
         // This method starts the elevator system
         public async Task StartElevator(Queue<Person> peopleQueue)
         {
@@ -100,18 +105,29 @@ namespace Basic_Elevator.Elevator
             _direction = Direction.None;
             ElevatorEvent();
         }
-
-        public List<Person> GetPeopleOnElevator()
+        public List<Person> GetPeopleOnElevator() => _peopleOnElevator;
+       
+        public List<Person> GetPeopleWaiting() => _peopleWaiting;
+        // This method gets the current floor based on the Y-position of the Elevator car
+        public int GetCurrentFloorByCarYPos()
         {
-            return _peopleOnElevator;
-        }
+            // Calculate the height of a floor in pixels
+            int floorHeight = Shaft.Height / TotalFloors;
 
+            // Calculate the floor based on the car's distance from the shaft bottom
+            int floor = (int)Math.Floor((double)(Shaft.Height - Car.Bottom) / floorHeight);
+
+            return floor;
+        }
+        #endregion
+
+        #region Private Methods
         // This method gets the final position of the Elevator car
         private int GetFinalCarPosition(int floor)
         {
             int shaftHeight = Shaft.Height;
             int carHeight = Car.Height;
-           
+
             int returnHeight = shaftHeight - carHeight;
 
             returnHeight -= carHeight * floor;
@@ -125,7 +141,7 @@ namespace Basic_Elevator.Elevator
             var peopleAbove = _peopleOnElevator.Where(x => x.TargetFloor > _currentFloor);
             var peopleBelow = _peopleOnElevator.Where(x => x.TargetFloor < _currentFloor);
             Person nextPerson = null;
-     
+
             if (_direction == Direction.None)
             {
                 // initially, set the direction based on the closest person
@@ -134,7 +150,7 @@ namespace Basic_Elevator.Elevator
             }
 
             if (_direction == Direction.Up)
-                nextPerson = GetNextPerson(peopleAbove, peopleBelow, _direction);   
+                nextPerson = GetNextPerson(peopleAbove, peopleBelow, _direction);
             else // Current direction is Down
                 nextPerson = GetNextPerson(peopleAbove, peopleBelow, _direction);
 
@@ -182,19 +198,9 @@ namespace Basic_Elevator.Elevator
             bool peopleEntered = false;
             foreach (var person in peopleAtThisFloor)
             {
-                if (person.Weight > _maxWeight)
-                {
-                    //Person is simply too heavy to use lift, has to be helicoptered out of building
-                    _peopleWaiting.Remove(person);
-                    Log(TimeSpan.FromSeconds(0), person.Name, $"with weight {person.Weight} Kg was too heavy for the elevator so {person.Name} left the building.", Color.DarkRed);
-                }
-
-                if (person.TargetFloor > TotalFloors)
-                {
-                    //Invalid floor
-                    _peopleWaiting.Remove(person);
-                    Log(TimeSpan.FromSeconds(0), person.Name, $"with weight {person.Weight} Kg boarded the elevator at the floor {person.CurrentFloor} and tried to go to {person.TargetFloor}, But it doesn't exist, so {person.Name} left the building.", Color.DarkRed);
-                }
+                //Bounds checks
+                CheckPersonIsNotTooHeavyForElevatorSystem(person);
+                CheckDestinationFloorExists(person);
 
                 if (person.Weight + _peopleOnElevator.Sum(y => y.Weight) <= _maxWeight)
                 {
@@ -202,7 +208,6 @@ namespace Basic_Elevator.Elevator
                     _peopleWaiting.Remove(person);
                     Log(TimeSpan.FromSeconds(0), person.Name, $"with weight {person.Weight} Kg boarded the elevator at the floor {person.CurrentFloor} Going to floor {person.TargetFloor}", Color.Green);
                     peopleEntered = true;
-                  
                 }
                 else
                 {
@@ -211,7 +216,7 @@ namespace Basic_Elevator.Elevator
             }
 
             if (peopleEntered)
-                await ElevatorDoorsAsync();    
+                await ElevatorDoorsAsync();
 
             if (overloadedList.Count == 1)
             {
@@ -224,6 +229,26 @@ namespace Basic_Elevator.Elevator
                 Log(TimeSpan.FromSeconds(0), people, $"with combined weight {weightTotal} Kg had to wait due to elevator's weight limit at floor {_currentFloor}", Color.OrangeRed);
             }
 
+        }
+
+        private void CheckDestinationFloorExists(Person person)
+        {
+            if (person.TargetFloor > TotalFloors)
+            {
+                //Invalid floor
+                _peopleWaiting.Remove(person);
+                Log(TimeSpan.FromSeconds(0), person.Name, $"with weight {person.Weight} Kg boarded the elevator at the floor {person.CurrentFloor} and tried to go to {person.TargetFloor}, But it doesn't exist, so {person.Name} left the building.", Color.DarkRed);
+            }
+        }
+
+        private void CheckPersonIsNotTooHeavyForElevatorSystem(Person person)
+        {
+            if (person.Weight > _maxWeight)
+            {
+                //Person is simply too heavy to use lift, has to be helicoptered out of building
+                _peopleWaiting.Remove(person);
+                Log(TimeSpan.FromSeconds(0), person.Name, $"with weight {person.Weight} Kg was too heavy for the elevator so {person.Name} left the building.", Color.DarkRed);
+            }
         }
 
         // This method operates the elevator doors
@@ -267,88 +292,15 @@ namespace Basic_Elevator.Elevator
         // This method moves the elevator to a specific floor
         private async Task MoveToFloor(int floor)
         {
-            if (floor > _currentFloor)
-                _direction = Direction.Up;           
-            else if (floor < _currentFloor)
-                _direction = Direction.Down;
-            else
-                _direction = Direction.None;
-
+            _direction = GetDirectionElevator(floor);
+          
             var distance = Math.Abs(floor - _currentFloor) * _floorHeight;
             _totalDistanceTravelledMeters += distance;
             var time = distance / _speed;
 
             if (_showSimulation)
             {
-                var timeMilliseconds = time * (1001 - SimulationSpeed);
-                var finalPosition = GetFinalCarPosition(floor);
-                var distanceToTravel = Math.Abs(finalPosition - Car.Location.Y);
-                var speedPixelsPerMilliseconds = Math.Max((double)distanceToTravel / timeMilliseconds,0.5);
-
-                if (floor > _currentFloor)
-                    _direction = Direction.Up;
-                else if (floor < _currentFloor)
-                    _direction = Direction.Down;
-                else
-                    _direction = Direction.None;
-
-                ElevatorEvent();
-                TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-
-                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                timer.Interval = 1;
-
-                double accumulatedChange = 0;
-                timer.Tick += (s, e) =>
-                {
-                    accumulatedChange += speedPixelsPerMilliseconds;
-                    int integerChange = (int)accumulatedChange;
-
-                    if (_direction == Direction.Up)
-                    {
-                        if (Car.Location.Y - integerChange <= finalPosition)
-                        {
-                            Car.Location = new System.Drawing.Point(Car.Location.X, finalPosition);
-                            timer.Stop();
-                            tcs.SetResult(true);
-                        }
-                        else
-                        {
-                            Car.Location = new System.Drawing.Point(Car.Location.X, Car.Location.Y - integerChange);
-                        }
-                        accumulatedChange -= integerChange;
-                        var testFloor = GetCurrentFloorByCarYPos();
-                        if (testFloor != _currentFloor)
-                        {
-                            _currentFloor = testFloor;
-                            ElevatorEvent();
-                        }
-                    }
-                    else
-                    {
-                        if (Car.Location.Y + integerChange >= finalPosition)
-                        {
-                            Car.Location = new System.Drawing.Point(Car.Location.X, finalPosition);
-                            timer.Stop();
-                            tcs.SetResult(true);
-                        }
-                        else
-                        {
-                            Car.Location = new System.Drawing.Point(Car.Location.X, Car.Location.Y + integerChange);
-                        }
-                        accumulatedChange -= integerChange;
-                        var testFloor = GetCurrentFloorByCarYPos();
-                        if (testFloor != _currentFloor)
-                        {
-                            _currentFloor = testFloor;
-                            ElevatorEvent();
-                        }
-                    }
-                };
-                timer.Start();
-
-                // Wait for the timer to finish.
-                await tcs.Task;
+                await SimulationUIProcessAsync(time, floor);
                 ElevatorEvent();
             }
             else
@@ -363,16 +315,90 @@ namespace Basic_Elevator.Elevator
             ElevatorEvent();
         }
 
-        // This method gets the current floor based on the Y-position of the Elevator car
-        public int GetCurrentFloorByCarYPos()
+        private Direction GetDirectionElevator(int floor)
         {
-            // Calculate the height of a floor in pixels
-            int floorHeight = Shaft.Height / TotalFloors;
+            if (floor > _currentFloor)
+                return Direction.Up;
+            else if (floor < _currentFloor)
+                return Direction.Down;
+            else
+                return Direction.None;
+        }
 
-            // Calculate the floor based on the car's distance from the shaft bottom
-            int floor = (int)Math.Floor((double)(Shaft.Height - Car.Bottom) / floorHeight);
+        private async Task SimulationUIProcessAsync(double time, int floor)
+        {
+            var simulationSpeedScale = 1 + ((double)SimulationSpeed - 1) / 5;
+            var timeMilliseconds = (time * 1000) / simulationSpeedScale;
 
-            return floor;
+            //var timeMilliseconds = (time * 1000) / ((double)SimulationSpeed / 100);
+            var finalPosition = GetFinalCarPosition(floor);
+            var distanceToTravel = Math.Abs(finalPosition - Car.Location.Y);
+            var speedPixelsPerMilliseconds = Math.Max((double)distanceToTravel / timeMilliseconds, 0.5);
+
+            if (floor > _currentFloor)
+                _direction = Direction.Up;
+            else if (floor < _currentFloor)
+                _direction = Direction.Down;
+            else
+                _direction = Direction.None;
+
+            ElevatorEvent();
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = 1;
+
+            double accumulatedChange = 0;
+            timer.Tick += (s, e) =>
+            {
+                accumulatedChange += speedPixelsPerMilliseconds;
+                int integerChange = (int)accumulatedChange;
+
+                if (_direction == Direction.Up)
+                {
+                    if (Car.Location.Y - integerChange <= finalPosition)
+                    {
+                        Car.Location = new System.Drawing.Point(Car.Location.X, finalPosition);
+                        timer.Stop();
+                        tcs.SetResult(true);
+                    }
+                    else
+                    {
+                        Car.Location = new System.Drawing.Point(Car.Location.X, Car.Location.Y - integerChange);
+                    }
+                    accumulatedChange -= integerChange;
+                    var testFloor = GetCurrentFloorByCarYPos();
+                    if (testFloor != _currentFloor)
+                    {
+                        _currentFloor = testFloor;
+                        ElevatorEvent();
+                    }
+                }
+                else
+                {
+                    if (Car.Location.Y + integerChange >= finalPosition)
+                    {
+                        Car.Location = new System.Drawing.Point(Car.Location.X, finalPosition);
+                        timer.Stop();
+                        tcs.SetResult(true);
+                    }
+                    else
+                    {
+                        Car.Location = new System.Drawing.Point(Car.Location.X, Car.Location.Y + integerChange);
+                    }
+                    accumulatedChange -= integerChange;
+                    var testFloor = GetCurrentFloorByCarYPos();
+                    if (testFloor != _currentFloor)
+                    {
+                        _currentFloor = testFloor;
+                        ElevatorEvent();
+                    }
+                }
+            };
+            timer.Start();
+
+            // Wait for the timer to finish.
+            await tcs.Task;
         }
 
         private void ElevatorEvent()
@@ -403,5 +429,6 @@ namespace Basic_Elevator.Elevator
 
             ElevatorEvent();
         }
+        #endregion
     }
 }

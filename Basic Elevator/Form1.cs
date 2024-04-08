@@ -38,7 +38,7 @@ namespace Basic_Elevator
                 panel.Height = floorHeightPanel;
                 panel.Width = panelFloors.Width;
                 panel.Location = new Point(0, panelFloors.Height - lastHeight - panel.Height);
-                panel.BackColor = Color.Blue;
+                panel.BackColor = Color.DodgerBlue;
                 panel.BorderStyle = BorderStyle.FixedSingle;
                 lastHeight += panel.Height;
                 panel.Text = $"Floor {i}: ";
@@ -98,6 +98,19 @@ namespace Basic_Elevator
                 labelLiftCurrentFloor.Text = $"Current Floor: {message.CurrentFloor}";
                 labelCurrentDirection.Text = $"Current Direction: {message.CurrentDirection}";
 
+
+                for (int i = 0; i < panelFloors.Controls.Count; i++)
+                {
+                    string present = "";
+                    var currentFloor = message.PeopleWaiting.Where(x => x.CurrentFloor == i);
+                    foreach (var person in currentFloor)
+                    {
+                        present+= $"{person.Name}: {person.Weight} kg" + Environment.NewLine;
+                    }
+                    panelFloors.Controls[i].Text = present;
+                }
+
+
                 if(message.DoorStatus == Doors.Open)         
                     panelElevatorCar.BackgroundImage = Properties.Resources.ElevatorOpen1;      
                 else if (message.DoorStatus == Doors.Closed)
@@ -156,7 +169,6 @@ namespace Basic_Elevator
                 listViewWaiting.Items.Clear();
                 listViewWaiting.Items.AddRange(adding);
                 listViewWaiting.EndUpdate();
-
             });
         }
 
