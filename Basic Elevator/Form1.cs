@@ -9,7 +9,7 @@ namespace Basic_Elevator
 {
     public partial class Form1 : Form
     {
-        private Elevator.Elevator elevator;
+        private Elevator.Elevator _elevator;
         delegate void LogDelegate(ListViewItem Lvi);
         delegate void ElevatorEventDelegate(ElevatorEvent Lvi);
 
@@ -22,9 +22,9 @@ namespace Basic_Elevator
             InitializeComponent();
             RecalculateSizeUI();
 
-             elevator = new Elevator.Elevator(totalFloors, 1.1, 725, 3.3, 100, panelElevatorCar, panelLiftShaft);
-            elevator.MessageLogged += Log;
-            elevator.ElevatorEventAction += ElevatorEvent;
+             _elevator = new Elevator.Elevator(totalFloors, 1.1, 725, 3.3, 100, panelElevatorCar, panelLiftShaft);
+            _elevator.MessageLogged += Log;
+            _elevator.ElevatorEventAction += ElevatorEvent;
         }
 
         private void RecalculateSizeUI()
@@ -80,7 +80,7 @@ namespace Basic_Elevator
                 Person person1 = new Person(rnd.Next(65,110), currentFloor, destinationFloor);
                 peopleQueue.Enqueue(person1);
             }
-            await elevator.StartElevator(peopleQueue);
+            await _elevator.StartElevator(peopleQueue);
         }
 
         public void Log(ListViewItem message)
@@ -155,7 +155,7 @@ namespace Basic_Elevator
                 listViewPeopleInLift.Items.AddRange(adding);
                 listViewPeopleInLift.EndUpdate();
 
-                adding = new ListViewItem[elevator.TotalFloors];
+                adding = new ListViewItem[_elevator.TotalFloors];
                 for (int i = 0; i < adding.Length; i++)
                 {
                     adding[i] = new ListViewItem($"Floor {i}");
@@ -174,7 +174,7 @@ namespace Basic_Elevator
 
         private void trackBarSimulationSpeed_Scroll(object sender, EventArgs e)
         {
-            elevator.SimulationSpeed = trackBarSimulationSpeed.Value;//1001-trackBarSimulationSpeed.Value;
+            _elevator.SimulationSpeed = trackBarSimulationSpeed.Value;//1001-trackBarSimulationSpeed.Value;
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -190,6 +190,11 @@ namespace Basic_Elevator
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
             RecalculateSizeUI();
+        }
+
+        private void checkBoxMute_CheckedChanged(object sender, EventArgs e)
+        {
+            _elevator.Mute = checkBoxMute.Checked;
         }
     }
 }

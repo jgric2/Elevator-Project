@@ -57,6 +57,7 @@
             this.panelLiftShaft = new System.Windows.Forms.Panel();
             this.panelFloors = new System.Windows.Forms.Panel();
             this.panelElevatorCar = new System.Windows.Forms.Panel();
+            this.checkBoxMute = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSimulationSpeed)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPeopleToSimulate)).BeginInit();
@@ -80,7 +81,7 @@
             // 
             this.trackBarSimulationSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarSimulationSpeed.Location = new System.Drawing.Point(300, 490);
+            this.trackBarSimulationSpeed.Location = new System.Drawing.Point(300, 512);
             this.trackBarSimulationSpeed.Maximum = 1000;
             this.trackBarSimulationSpeed.Minimum = 1;
             this.trackBarSimulationSpeed.Name = "trackBarSimulationSpeed";
@@ -93,7 +94,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(300, 472);
+            this.label1.Location = new System.Drawing.Point(300, 494);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 3;
@@ -112,7 +113,7 @@
             this.groupBox1.Controls.Add(this.labelPeopleInLift);
             this.groupBox1.Location = new System.Drawing.Point(801, 75);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(334, 443);
+            this.groupBox1.Size = new System.Drawing.Size(334, 465);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Statistics";
@@ -149,7 +150,7 @@
             this.listViewLog.HideSelection = false;
             this.listViewLog.Location = new System.Drawing.Point(298, 12);
             this.listViewLog.Name = "listViewLog";
-            this.listViewLog.Size = new System.Drawing.Size(496, 457);
+            this.listViewLog.Size = new System.Drawing.Size(496, 479);
             this.listViewLog.TabIndex = 5;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
             this.listViewLog.View = System.Windows.Forms.View.Details;
@@ -236,7 +237,7 @@
             this.listViewWaiting.HideSelection = false;
             this.listViewWaiting.Location = new System.Drawing.Point(6, 255);
             this.listViewWaiting.Name = "listViewWaiting";
-            this.listViewWaiting.Size = new System.Drawing.Size(322, 180);
+            this.listViewWaiting.Size = new System.Drawing.Size(322, 202);
             this.listViewWaiting.TabIndex = 6;
             this.listViewWaiting.UseCompatibleStateImageBehavior = false;
             this.listViewWaiting.View = System.Windows.Forms.View.Details;
@@ -300,7 +301,7 @@
             this.panelSim.Controls.Add(this.tableLayoutPanel1);
             this.panelSim.Location = new System.Drawing.Point(7, 7);
             this.panelSim.Name = "panelSim";
-            this.panelSim.Size = new System.Drawing.Size(285, 510);
+            this.panelSim.Size = new System.Drawing.Size(285, 513);
             this.panelSim.TabIndex = 8;
             // 
             // tableLayoutPanel1
@@ -315,7 +316,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 510);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(285, 513);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panelLiftShaft
@@ -326,7 +327,7 @@
             this.panelLiftShaft.Location = new System.Drawing.Point(0, 0);
             this.panelLiftShaft.Margin = new System.Windows.Forms.Padding(0);
             this.panelLiftShaft.Name = "panelLiftShaft";
-            this.panelLiftShaft.Size = new System.Drawing.Size(119, 510);
+            this.panelLiftShaft.Size = new System.Drawing.Size(119, 513);
             this.panelLiftShaft.TabIndex = 0;
             // 
             // panelFloors
@@ -336,7 +337,7 @@
             this.panelFloors.Location = new System.Drawing.Point(119, 0);
             this.panelFloors.Margin = new System.Windows.Forms.Padding(0);
             this.panelFloors.Name = "panelFloors";
-            this.panelFloors.Size = new System.Drawing.Size(166, 510);
+            this.panelFloors.Size = new System.Drawing.Size(166, 513);
             this.panelFloors.TabIndex = 1;
             this.panelFloors.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFloors_Paint);
             // 
@@ -350,11 +351,23 @@
             this.panelElevatorCar.Size = new System.Drawing.Size(117, 73);
             this.panelElevatorCar.TabIndex = 0;
             // 
+            // checkBoxMute
+            // 
+            this.checkBoxMute.AutoSize = true;
+            this.checkBoxMute.Location = new System.Drawing.Point(7, 523);
+            this.checkBoxMute.Name = "checkBoxMute";
+            this.checkBoxMute.Size = new System.Drawing.Size(50, 17);
+            this.checkBoxMute.TabIndex = 9;
+            this.checkBoxMute.Text = "Mute";
+            this.checkBoxMute.UseVisualStyleBackColor = true;
+            this.checkBoxMute.CheckedChanged += new System.EventHandler(this.checkBoxMute_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1146, 521);
+            this.ClientSize = new System.Drawing.Size(1146, 543);
+            this.Controls.Add(this.checkBoxMute);
             this.Controls.Add(this.panelSim);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numericUpDownPeopleToSimulate);
@@ -409,6 +422,7 @@
         private System.Windows.Forms.Panel panelLiftShaft;
         private System.Windows.Forms.Panel panelElevatorCar;
         private System.Windows.Forms.Panel panelFloors;
+        private System.Windows.Forms.CheckBox checkBoxMute;
     }
 }
 

@@ -26,7 +26,9 @@ namespace Basic_Elevator.Elevator
         private int _currentFloor = 0;  // Current floor elevator is on
         private List<Person> _peopleWaiting = new List<Person>();
         public bool ElevatorRunning = false; // Indicator of whether the elevator is running
-       
+
+        public bool Mute = false;
+
         // Simulation variables
         public int SimulationSpeed = 100;
         public int TotalFloors;
@@ -255,7 +257,9 @@ namespace Basic_Elevator.Elevator
         private async Task ElevatorDoorsAsync()
         {
             DoorStatus = Doors.Open;
-            _player.Play();
+            if (Mute == false)
+                _player.Play();
+
             ElevatorEvent();
             await Task.Delay(1000);
             DoorStatus = Doors.Closed;
