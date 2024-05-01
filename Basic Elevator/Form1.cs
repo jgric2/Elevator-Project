@@ -72,14 +72,16 @@ namespace Basic_Elevator
             Random rnd = new Random();
             for (int i = 0; i < (int)numericUpDownPeopleToSimulate.Value; i++)
             {
-                int currentFloor = rnd.Next(0,8);
-                int destinationFloor = rnd.Next(0, 8);
+                int currentFloor = rnd.Next(0, totalFloors);
+                int destinationFloor = rnd.Next(0, totalFloors);
                 while (currentFloor == destinationFloor)
-                    destinationFloor = rnd.Next(0, 8);
+                    destinationFloor = rnd.Next(0, totalFloors);
                 
                 Person person1 = new Person(rnd.Next(65,110), currentFloor, destinationFloor);
                 peopleQueue.Enqueue(person1);
             }
+
+
             await _elevator.StartElevator(peopleQueue);
         }
 
