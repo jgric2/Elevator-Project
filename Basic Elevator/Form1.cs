@@ -68,21 +68,25 @@ namespace Basic_Elevator
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            Queue<Person> peopleQueue = CreateQueueOfPeople((int)numericUpDownPeopleToSimulate.Value);
+            await _elevator.StartElevator(peopleQueue);
+        }
+
+        private Queue<Person> CreateQueueOfPeople(int count)
+        {
             Queue<Person> peopleQueue = new Queue<Person>();
             Random rnd = new Random();
-            for (int i = 0; i < (int)numericUpDownPeopleToSimulate.Value; i++)
+            for (int i = 0; i < count; i++)
             {
                 int currentFloor = rnd.Next(0, totalFloors);
                 int destinationFloor = rnd.Next(0, totalFloors);
                 while (currentFloor == destinationFloor)
                     destinationFloor = rnd.Next(0, totalFloors);
-                
-                Person person1 = new Person(rnd.Next(65,110), currentFloor, destinationFloor);
+
+                Person person1 = new Person(rnd.Next(65, 110), currentFloor, destinationFloor);
                 peopleQueue.Enqueue(person1);
             }
-
-
-            await _elevator.StartElevator(peopleQueue);
+            return peopleQueue;
         }
 
         public void Log(ListViewItem message)

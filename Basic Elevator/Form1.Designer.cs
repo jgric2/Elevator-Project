@@ -32,31 +32,31 @@
             this.trackBarSimulationSpeed = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.labelPeopleInLift = new System.Windows.Forms.Label();
-            this.labelPeopleWaiting = new System.Windows.Forms.Label();
-            this.listViewLog = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.labelLiftWeight = new System.Windows.Forms.Label();
-            this.listViewPeopleInLift = new System.Windows.Forms.ListView();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.labelLiftCurrentFloor = new System.Windows.Forms.Label();
-            this.labelCurrentDirection = new System.Windows.Forms.Label();
             this.listViewWaiting = new System.Windows.Forms.ListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.labelCurrentDirection = new System.Windows.Forms.Label();
+            this.labelLiftCurrentFloor = new System.Windows.Forms.Label();
+            this.listViewPeopleInLift = new System.Windows.Forms.ListView();
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.labelLiftWeight = new System.Windows.Forms.Label();
+            this.labelPeopleWaiting = new System.Windows.Forms.Label();
+            this.labelPeopleInLift = new System.Windows.Forms.Label();
+            this.listViewLog = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.numericUpDownPeopleToSimulate = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.panelSim = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelLiftShaft = new System.Windows.Forms.Panel();
-            this.panelFloors = new System.Windows.Forms.Panel();
             this.panelElevatorCar = new System.Windows.Forms.Panel();
+            this.panelFloors = new System.Windows.Forms.Panel();
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSimulationSpeed)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -119,6 +119,106 @@
             this.groupBox1.Text = "Statistics";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // listViewWaiting
+            // 
+            this.listViewWaiting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listViewWaiting.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9});
+            this.listViewWaiting.GridLines = true;
+            this.listViewWaiting.HideSelection = false;
+            this.listViewWaiting.Location = new System.Drawing.Point(6, 302);
+            this.listViewWaiting.Name = "listViewWaiting";
+            this.listViewWaiting.Size = new System.Drawing.Size(322, 155);
+            this.listViewWaiting.TabIndex = 6;
+            this.listViewWaiting.UseCompatibleStateImageBehavior = false;
+            this.listViewWaiting.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Floor";
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Count";
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Combined Weight";
+            this.columnHeader9.Width = 117;
+            // 
+            // labelCurrentDirection
+            // 
+            this.labelCurrentDirection.AutoSize = true;
+            this.labelCurrentDirection.Location = new System.Drawing.Point(9, 52);
+            this.labelCurrentDirection.Name = "labelCurrentDirection";
+            this.labelCurrentDirection.Size = new System.Drawing.Size(89, 13);
+            this.labelCurrentDirection.TabIndex = 5;
+            this.labelCurrentDirection.Text = "Current Direction:";
+            // 
+            // labelLiftCurrentFloor
+            // 
+            this.labelLiftCurrentFloor.AutoSize = true;
+            this.labelLiftCurrentFloor.Location = new System.Drawing.Point(9, 34);
+            this.labelLiftCurrentFloor.Name = "labelLiftCurrentFloor";
+            this.labelLiftCurrentFloor.Size = new System.Drawing.Size(73, 13);
+            this.labelLiftCurrentFloor.TabIndex = 4;
+            this.labelLiftCurrentFloor.Text = "Lift weight kg:";
+            // 
+            // listViewPeopleInLift
+            // 
+            this.listViewPeopleInLift.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader10});
+            this.listViewPeopleInLift.GridLines = true;
+            this.listViewPeopleInLift.HideSelection = false;
+            this.listViewPeopleInLift.Location = new System.Drawing.Point(6, 87);
+            this.listViewPeopleInLift.Name = "listViewPeopleInLift";
+            this.listViewPeopleInLift.Size = new System.Drawing.Size(322, 196);
+            this.listViewPeopleInLift.TabIndex = 3;
+            this.listViewPeopleInLift.UseCompatibleStateImageBehavior = false;
+            this.listViewPeopleInLift.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Name";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Weight";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Destination";
+            this.columnHeader6.Width = 79;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Direction";
+            this.columnHeader10.Width = 77;
+            // 
+            // labelLiftWeight
+            // 
+            this.labelLiftWeight.AutoSize = true;
+            this.labelLiftWeight.Location = new System.Drawing.Point(9, 16);
+            this.labelLiftWeight.Name = "labelLiftWeight";
+            this.labelLiftWeight.Size = new System.Drawing.Size(73, 13);
+            this.labelLiftWeight.TabIndex = 2;
+            this.labelLiftWeight.Text = "Lift weight kg:";
+            // 
+            // labelPeopleWaiting
+            // 
+            this.labelPeopleWaiting.AutoSize = true;
+            this.labelPeopleWaiting.Location = new System.Drawing.Point(9, 286);
+            this.labelPeopleWaiting.Name = "labelPeopleWaiting";
+            this.labelPeopleWaiting.Size = new System.Drawing.Size(85, 13);
+            this.labelPeopleWaiting.TabIndex = 1;
+            this.labelPeopleWaiting.Text = "People Waiting: ";
+            // 
             // labelPeopleInLift
             // 
             this.labelPeopleInLift.AutoSize = true;
@@ -127,15 +227,6 @@
             this.labelPeopleInLift.Size = new System.Drawing.Size(70, 13);
             this.labelPeopleInLift.TabIndex = 0;
             this.labelPeopleInLift.Text = "People in lift: ";
-            // 
-            // labelPeopleWaiting
-            // 
-            this.labelPeopleWaiting.AutoSize = true;
-            this.labelPeopleWaiting.Location = new System.Drawing.Point(6, 239);
-            this.labelPeopleWaiting.Name = "labelPeopleWaiting";
-            this.labelPeopleWaiting.Size = new System.Drawing.Size(85, 13);
-            this.labelPeopleWaiting.TabIndex = 1;
-            this.labelPeopleWaiting.Text = "People Waiting: ";
             // 
             // listViewLog
             // 
@@ -168,97 +259,6 @@
             // 
             this.columnHeader3.Text = "Description";
             this.columnHeader3.Width = 274;
-            // 
-            // labelLiftWeight
-            // 
-            this.labelLiftWeight.AutoSize = true;
-            this.labelLiftWeight.Location = new System.Drawing.Point(9, 16);
-            this.labelLiftWeight.Name = "labelLiftWeight";
-            this.labelLiftWeight.Size = new System.Drawing.Size(73, 13);
-            this.labelLiftWeight.TabIndex = 2;
-            this.labelLiftWeight.Text = "Lift weight kg:";
-            // 
-            // listViewPeopleInLift
-            // 
-            this.listViewPeopleInLift.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader10});
-            this.listViewPeopleInLift.GridLines = true;
-            this.listViewPeopleInLift.HideSelection = false;
-            this.listViewPeopleInLift.Location = new System.Drawing.Point(6, 87);
-            this.listViewPeopleInLift.Name = "listViewPeopleInLift";
-            this.listViewPeopleInLift.Size = new System.Drawing.Size(322, 149);
-            this.listViewPeopleInLift.TabIndex = 3;
-            this.listViewPeopleInLift.UseCompatibleStateImageBehavior = false;
-            this.listViewPeopleInLift.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Name";
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Weight";
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Destination";
-            this.columnHeader6.Width = 79;
-            // 
-            // labelLiftCurrentFloor
-            // 
-            this.labelLiftCurrentFloor.AutoSize = true;
-            this.labelLiftCurrentFloor.Location = new System.Drawing.Point(9, 34);
-            this.labelLiftCurrentFloor.Name = "labelLiftCurrentFloor";
-            this.labelLiftCurrentFloor.Size = new System.Drawing.Size(73, 13);
-            this.labelLiftCurrentFloor.TabIndex = 4;
-            this.labelLiftCurrentFloor.Text = "Lift weight kg:";
-            // 
-            // labelCurrentDirection
-            // 
-            this.labelCurrentDirection.AutoSize = true;
-            this.labelCurrentDirection.Location = new System.Drawing.Point(9, 52);
-            this.labelCurrentDirection.Name = "labelCurrentDirection";
-            this.labelCurrentDirection.Size = new System.Drawing.Size(89, 13);
-            this.labelCurrentDirection.TabIndex = 5;
-            this.labelCurrentDirection.Text = "Current Direction:";
-            // 
-            // listViewWaiting
-            // 
-            this.listViewWaiting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.listViewWaiting.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9});
-            this.listViewWaiting.GridLines = true;
-            this.listViewWaiting.HideSelection = false;
-            this.listViewWaiting.Location = new System.Drawing.Point(6, 255);
-            this.listViewWaiting.Name = "listViewWaiting";
-            this.listViewWaiting.Size = new System.Drawing.Size(322, 202);
-            this.listViewWaiting.TabIndex = 6;
-            this.listViewWaiting.UseCompatibleStateImageBehavior = false;
-            this.listViewWaiting.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Floor";
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Count";
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Combined Weight";
-            this.columnHeader9.Width = 117;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Direction";
-            this.columnHeader10.Width = 77;
             // 
             // numericUpDownPeopleToSimulate
             // 
@@ -330,6 +330,16 @@
             this.panelLiftShaft.Size = new System.Drawing.Size(119, 513);
             this.panelLiftShaft.TabIndex = 0;
             // 
+            // panelElevatorCar
+            // 
+            this.panelElevatorCar.BackColor = System.Drawing.Color.Silver;
+            this.panelElevatorCar.BackgroundImage = global::Basic_Elevator.Properties.Resources.ElevatorClosed1;
+            this.panelElevatorCar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panelElevatorCar.Location = new System.Drawing.Point(0, 437);
+            this.panelElevatorCar.Name = "panelElevatorCar";
+            this.panelElevatorCar.Size = new System.Drawing.Size(117, 73);
+            this.panelElevatorCar.TabIndex = 0;
+            // 
             // panelFloors
             // 
             this.panelFloors.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -341,18 +351,9 @@
             this.panelFloors.TabIndex = 1;
             this.panelFloors.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFloors_Paint);
             // 
-            // panelElevatorCar
-            // 
-            this.panelElevatorCar.BackColor = System.Drawing.Color.Silver;
-            this.panelElevatorCar.BackgroundImage = global::Basic_Elevator.Properties.Resources.ElevatorClosed1;
-            this.panelElevatorCar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.panelElevatorCar.Location = new System.Drawing.Point(0, 437);
-            this.panelElevatorCar.Name = "panelElevatorCar";
-            this.panelElevatorCar.Size = new System.Drawing.Size(117, 73);
-            this.panelElevatorCar.TabIndex = 0;
-            // 
             // checkBoxMute
             // 
+            this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMute.AutoSize = true;
             this.checkBoxMute.Location = new System.Drawing.Point(7, 523);
             this.checkBoxMute.Name = "checkBoxMute";
